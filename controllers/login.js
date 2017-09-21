@@ -13,7 +13,8 @@ router.post('/', (request, response) => {
         if (vendedor && passwordHash.verify(request.body.senha, vendedor.senha)) {
             const token = jwt.sign({ _id: vendedor._id }, 'bolinhodechuva');
 
-            response.send(token);
+            response.set('Authorization', token);
+            response.send(vendedor);
             return;
         }
 

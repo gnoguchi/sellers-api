@@ -1,11 +1,13 @@
 const express = require('express');
 const VendedorSchema = require('../schemas/vendedor');
 const passwordHash = require('password-hash');
+const expressJwt = require('express-jwt');
 
 let router = express.Router()
 
+
 router.post('/', (request, response) => {
-    let vendedor = new VendedorSchema(request.body); 
+    let vendedor = new VendedorSchema(request.body);
     vendedor.senha = passwordHash.generate(request.body.senha);
 
     vendedor.save((err, resultado) => {
@@ -20,6 +22,8 @@ router.post('/', (request, response) => {
     console.log(vendedor)
 });
 
+
+router.use(expressJwt({secret: 'bolinhodechuva'}));
 
 router.get('/', (request, response) => {
     VendedorSchema.find((err, result) => {
